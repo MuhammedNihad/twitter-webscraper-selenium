@@ -57,12 +57,13 @@ else:
     hrefs = wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, '[data-testid=User-Name] a[role=link][href*=status]')))
     print("getting tweets ...")
     # Iterate over usernames and tweets and print them
-    for username, tweet,href_element, like_element, engagement_element in zip(usernames, tweets, like_elements, engagement_elements,hrefs):
+    for username, tweet, like_element, engagement_element, href_element in zip(usernames, tweets, like_elements, engagement_elements, hrefs):
+
         user_full_name = username.find_element(By.XPATH, '..').text.strip().rstrip('.')
         likes = like_element.text.split()[0] if like_element.text else "0"  # Extract the number of likes or default to 0 if not found
         engagement = engagement_element.text.split()[0] if engagement_element.text else "0"  # Extract the number of views or engagement or default to 0 if not found
 
-        href=link = href_element.get_attribute('href')
+        href = href_element.get_attribute('href')
         print(f'Username: {user_full_name}')
         print(f'Tweet: {tweet.text}')
         print(f'Likes: {likes}')
