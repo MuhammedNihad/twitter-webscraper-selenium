@@ -1,1 +1,2 @@
+python-decouple==3.8
 selenium==4.18.1
