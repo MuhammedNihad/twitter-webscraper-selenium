@@ -32,6 +32,19 @@ else:
     # Inputs for search filter
     from_account = input("Enter the account username from which you would like to retrieve tweets"
                          "\nLeave this field empty to retrieve tweets from all accounts: ")
+    def get_integer_or_none(prompt):
+        while True:
+            value = input(prompt)
+            try:
+                return int(value) if value else None
+            except ValueError:
+                if value:  # Check if the input is not empty
+                    print("Please enter a number or leave empty.")
+                continue  # Restart the loop if invalid input found (non-empty and non-numeric)
+
+    minimum_replies = get_integer_or_none("Enter the minimum replies tweets should have (or leave empty): ")
+    minimum_likes = get_integer_or_none("Enter the minimum likes tweets should have (or leave empty): ")
+    minimum_retweets = get_integer_or_none("Enter the minimum retweets should have (or leave empty): ")
     include_replies = input("Do you want to include replies? (Y/n): ")
     include_replies = include_replies.lower() in ['y', 'yes']
     include_links = input("Do you want to include links? (Y/n): ")
@@ -78,10 +91,16 @@ else:
         search_input.send_keys(Keys.CONTROL + "a",Keys.DELETE)
 
         # Perform search with filter
-        if from_account or not include_replies or not include_links:
+        if from_account or minimum_replies or minimum_likes or minimum_retweets or not include_replies or not include_links:
             filters = ""
             if from_account:
                 filters += f"(from:{from_account})"
+            if type(minimum_replies)==int:
+                filters += f"min_replies:{minimum_replies} "
+            if type(minimum_likes)==int:
+                filters += f"min_faves:{minimum_likes} "
+            if type(minimum_retweets)==int:
+                filters += f"min_retweets:{minimum_retweets} "
             if not include_replies:
                 filters += "-filter:replies "
             if not include_links:
