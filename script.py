@@ -16,8 +16,18 @@ except Exception as e:
     )
 
 else:
+    while True:
+        try:
+             topic_count = int(input(f"How many topics do you want search? (1-10): "))
+             if 1 <= topic_count <= 10:  # Check if within range (1 to 10)
+                break
+             else:
+                print("Please enter a number between 1 and 10.")
+        except ValueError:
+            print("Please enter a number.")
+
     print("Please enter the topic names you want me to search for")
-    topic_names = [input(f"Enter topic {i + 1}: ") for i in range(10)]
+    topic_names = [input(f"Enter topic {i + 1}: ") for i in range(topic_count)]
 
     driver = webdriver.Chrome()
 
