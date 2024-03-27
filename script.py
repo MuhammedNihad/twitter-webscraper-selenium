@@ -18,6 +18,16 @@ except Exception as e:
 else:
     while True:
         try:
+            number_of_tweets = int(input("How many tweets do you want to retrieve? "))
+            if 1 <= number_of_tweets <= 20:  # Check if within range (1 to 20)
+                break
+            else:
+                print("Please enter a number between 1 and 20.")
+        except ValueError:
+            print("Please enter a number.")
+
+    while True:
+        try:
              topic_count = int(input(f"How many topics do you want search? (1-10): "))
              if 1 <= topic_count <= 10:  # Check if within range (1 to 10)
                 break
@@ -147,6 +157,7 @@ else:
         )
         print("getting tweets ...")
         # Iterate over usernames and tweets and print them
+        tweet_count = 0
         for username, tweet, like_element, engagement_element, href_element in zip(
             usernames, tweets, like_elements, engagement_elements, hrefs
         ):
@@ -170,5 +181,11 @@ else:
             print("Link", href)
             print("---")
             time.sleep(5)
+            
+            # Increment counter and break after dynamic tweets count
+            tweet_count += 1
+            if tweet_count >= number_of_tweets:
+                break
+
 
     driver.quit()
