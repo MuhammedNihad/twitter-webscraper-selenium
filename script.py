@@ -30,6 +30,8 @@ else:
     topic_names = [input(f"Enter topic {i + 1}: ") for i in range(topic_count)]
 
     # Inputs for search filter
+    from_account = input("Enter the account username from which you would like to retrieve tweets"
+                         "\nLeave this field empty to retrieve tweets from all accounts: ")
     include_replies = input("Do you want to include replies? (Y/n): ")
     include_replies = include_replies.lower() in ['y', 'yes']
     include_links = input("Do you want to include links? (Y/n): ")
@@ -76,8 +78,10 @@ else:
         search_input.send_keys(Keys.CONTROL + "a",Keys.DELETE)
 
         # Perform search with filter
-        if not include_replies or not include_links:
+        if from_account or not include_replies or not include_links:
             filters = ""
+            if from_account:
+                filters += f"(from:{from_account})"
             if not include_replies:
                 filters += "-filter:replies "
             if not include_links:
