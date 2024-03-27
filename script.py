@@ -29,6 +29,12 @@ else:
     print("Please enter the topic names you want me to search for")
     topic_names = [input(f"Enter topic {i + 1}: ") for i in range(topic_count)]
 
+    # Inputs for search filter
+    include_replies = input("Do you want to include replies? (Y/n): ")
+    include_replies = include_replies.lower() in ['y', 'yes']
+    include_links = input("Do you want to include links? (Y/n): ")
+    include_links = include_links.lower() in ['y', 'yes']
+
     driver = webdriver.Chrome()
 
     driver.get("https://twitter.com/login")
@@ -68,7 +74,17 @@ else:
             )
         )
         search_input.send_keys(Keys.CONTROL + "a",Keys.DELETE)
-        search_input.send_keys(topic_name)
+
+        # Perform search with filter
+        if not include_replies or not include_links:
+            filters = ""
+            if not include_replies:
+                filters += "-filter:replies "
+            if not include_links:
+                filters += "-filter:links "
+            search_input.send_keys(f"{topic_name} {filters}")
+        else:
+            search_input.send_keys(topic_name)
         search_input.send_keys(Keys.ENTER)
 
         # Wait for the tweets to load
